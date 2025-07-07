@@ -1,0 +1,526 @@
+openapi: 3.0.4
+info:
+  title: API Servicios ERP para sistemas de fábrica
+  description: Detalle de los servicios proporcinados por el software del ERP que son llamadas desde sistemas externos como sistemas de fábrica
+   para guardar información en el ERP. Tambien ser ofrecen servicios de consulta para poder consultar desde sistemas externos información de fábrica
+   almacenada en el ERP.
+  version: 1.0.0
+servers:
+  - url: https://server.erp.com
+tags:
+  - name: contratosCompra
+    description: Servicios de contratos de compra
+  - name: recepciones
+    description: Servicios de recepciones de materia prima
+  - name: expediciones
+    description: Servicios de expediciones de pienso
+paths:
+  /contratosCompra:
+    post:
+      tags:
+        - contratosCompra
+      summary: Crear o modificar contratos de compra
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContratosCompra"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [OK, NOK]
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [NOK]
+    get:
+      tags:
+        - contratosCompra
+      summary: Consulta de contratos de compra
+      description: Consulta por id pasado por parametro. El identificador codigoexterno usado anteriormente.
+      parameters:
+        - name: id
+          in: query
+          description: Identificador del contrato de compra
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContratosCompra"
+        '404':
+          description: No se encuentra el registro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [NOK]
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [NOK]
+  /recepciones:
+    post:
+      tags:
+        - recepciones
+      summary: Crear o registrar recepciones de materia prima
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Recepciones"
+      responses:
+        '200':
+          description: Recepción procesada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Se ha guardado correctamente.
+                  code:
+                    type: string
+                    enum: [OK, NOK]
+                    example: OK
+        '500':
+          description: Error al procesar la recepción
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Se debe rellenar el campo producto.
+                  code:
+                    type: string
+                    enum: [NOK]
+                    example: NOK    
+    get:
+      tags:
+        - recepciones
+      summary: Consulta de recepciones de materia prima
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recepciones"
+        '404':
+          description: No se encuentra el registro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [NOK]
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [NOK]
+  /expediciones:
+    post:
+      tags:
+        - expediciones
+      summary: Obtener en el erp expediciones de pienso realizardas desde fábrica
+      parameters:
+        - name: tipo
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Expediciones]
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Expediciones'
+      responses:
+        '200':
+          description: Expediciones recibidas correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Expediciones procesadas correctamente
+        '400':
+          description: Solicitud incorrecta
+        '500':
+          description: Error interno del servidor
+    get:
+      tags:
+        - expediciones
+      summary: Consulta de expediciones de pienso
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expediciones"
+        '404':
+          description: No se encuentra el registro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [OK, NOK]
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    enum: [NOK]
+components:
+  schemas:
+    ContratosCompra:
+      type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - contratosCompra
+      properties:
+        mensajeId:
+          type: string
+          format: uuid
+          description: Identificador del mensaje
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+        origen:
+          type: string
+          description: Identificador del sistema origen
+        contratosCompra:
+          type: array
+          description: Lista de los contratos compra.
+          items:
+            type: object
+            required:
+              - accion
+              - codigoExterno
+              - proveedor
+              - fechaInicio
+              - fechaFin
+              - producto
+              - presentacion
+              - cantidad
+              - estado
+            properties:
+              accion:
+                type: string
+                enum: [A, M]
+                description: Alta (A) o Modificación (M)
+              codigoExterno:
+                type: string
+                description: Código externo del contrato de compra
+              proveedor:
+                type: string
+                description: Cuenta del proveedor
+              fechaInicio:
+                type: string
+                format: date-time
+                description: Fecha desde
+              fechaFin:
+                type: string
+                format: date-time
+                description: Fecha de expiración
+              producto:
+                type: string
+                description: Código del artículo
+              presentacion:
+                type: string
+                description: Código AEMES de presentación
+              cantidad:
+                type: number
+                format: float
+                description: Cantidad pendiente de entrega
+              estado:
+                type: string
+                enum: [O, T, P]
+                description: Estado del acuerdo (O aplicación abierta, T aplicación cerrada, P pendiente de abrirse)
+              observacion:
+                type: string
+                description: Observaciones del acuerdo
+              parametros:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    numeroParametro:
+                      type: string
+                      description: Identificador del parámetro del grupo de prueba
+                    valorOptimo:
+                      type: number
+                      description: Valor óptimo del parámetro
+                    valorMinimo:
+                      type: number
+                      description: Valor mínimo aceptable
+                    valorMaximo:
+                      type: number
+                      description: Valor máximo aceptable
+    Recepciones:
+      type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - recepciones
+      properties:
+        mensajeId:
+          type: string
+          format: uuid
+          description: Identificador del mensaje
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha de creación (ISO 8601 con zona horaria)
+        origen:
+          type: string
+          description: Identificador del sistema origen
+        recepciones:
+          type: array
+          items:
+            type: object
+            required:
+              - viajeAemes
+            properties:
+              viajeAemes:
+                type: string
+                description: Número de identificación interna de aemes
+              codigoExterno:
+                type: string
+                description: Identificador de la recepción (referencia transportista)
+              identificadorProceso:
+                type: string
+              fecha:
+                type: string
+                format: date-time
+              matriculaVehiculo:
+                type: string
+              matriculaRemolque:
+                type: string
+              transportista:
+                type: string
+              conductor:
+                type: string
+              perifericoPeso:
+                type: string
+              fechaEntrada:
+                type: string
+                format: date-time
+              pesoEntrada:
+                type: number
+                format: float
+              fechaSalida:
+                type: string
+                format: date-time
+              pesoSalida:
+                type: number
+                format: float
+              estado:
+                type: string
+                enum: [P, C, R]
+              codigoRechazo:
+                type: string
+              reenviado:
+                type: string
+                enum: [S, N]
+              lineas:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - numeroLinea
+                    - producto
+                    - cantidadTeorica
+                    - cantidadReal
+                  properties:
+                    id:
+                      type: string
+                    numeroLinea:
+                      type: integer
+                    producto:
+                      type: string
+                    presentacion:
+                      type: string
+                    numerosEnvases:
+                      type: integer
+                    codigoEnvase:
+                      type: string
+                    cantidadTeorica:
+                      type: number
+                      format: float
+                    cantidadReal:
+                      type: number
+                      format: float
+                    proveedor:
+                      type: string
+                    aplicacion:
+                      type: string
+                    loteProveedor:
+                      type: string
+                    loteEntrada:
+                      type: string
+                    codigoMuestra:
+                      type: string
+                    codigoRecipiente:
+                      type: string
+                    detalle1:
+                      type: string
+                    detalle2:
+                      type: string
+                    detalle3:
+                      type: string
+                    detalle4:
+                      type: string
+                    detalle5:
+                      type: string
+                    detalle6:
+                      type: string
+                    detalle7:
+                      type: string
+                    detalle8:
+                      type: string
+                    detalle9:
+                      type: string
+                    detalle10:
+                      type: string
+    Expediciones:
+      type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - expediciones
+      properties:
+        mensajeId:
+          type: string
+          format: uuid
+          description: Identificador del mensaje
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha de creación (ISO 8601 con zona horaria)
+        origen:
+          type: string
+          description: Identificador del origen
+          example: D365
+        expediciones:
+          type: array
+          items:
+            type: object
+            required:
+              - accion
+              - codigoExterno
+              - origen
+            properties:
+              accion:
+                type: string
+                description: A cuando es alta, B cuando es baja
+                enum: [A, B]
+              codigoExterno:
+                type: string
+              fecha:
+                type: string
+                format: date
+              matriculaRemolque:
+                type: string
+              matriculaVehiculo:
+                type: string
+              transportista:
+                type: string
+              conductor:
+                type: string
+              estado:
+                type: string
+                enum: [E]
+              lineas:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pedido:
+                      type: string
+                    producto:
+                      type: string
+                    cantidad:
+                      type: number
+                      format: float
+  securitySchemes:
+    api_auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/vallcompanys.es/oauth2/token
+          scopes:
+            "write:api": permiso de escritura
+            "read:api": permiso de lectura
