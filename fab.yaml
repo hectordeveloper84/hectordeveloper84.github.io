@@ -1,4 +1,4 @@
-openapi: 3.0.4
+openapi: 3.0.1
 info:
   title: API Servicios Software Fábrica para sistemas de  gestión (ERP)
   description: Detalle de los servicios proporcinados por el software de fábrica que son llamadas desde sistemas externos como sistemas de gestión (ERP)
@@ -8,23 +8,29 @@ info:
 servers:
   - url: https://server.fabrica.com
 tags:
-  - name: contratosCompra
+  - name: Contratos de Compra
     description: Servicios de contratos de compra
-  - name: recepciones
+  - name: Recepciones
     description: Servicios de recepciones de materia prima
-  - name: expediciones
+  - name: Expediciones
     description: Servicios de expediciones de pienso
-  - name: agenda
+  - name: Agenda
     description: Servicios de datos de agenda
-  - name: materiaPrima
+  - name: Materia Prima
     description: Servicios de datos de materia prima
-  - name: vehiculos
+  - name: Vehículos
     description: Servicios de datos de vehículos
+  - name: Fórmulas
+    description: Servicios de fórmulas
+  - name: Pedidos de pienso
+    description: Servicios de pedidos de pienso
+  - name: Producciones
+    description: Servicios de Producciones
 paths:
   /clientes:
     post:
       tags:
-        - agenda
+        - Agenda
       summary: Crear o modificar clientes
       requestBody:
         required: true
@@ -44,7 +50,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -56,16 +65,19 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Agenda
       summary: Consulta de clientes
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro.
       parameters:
         - name: id
           in: query
-          description: Identificador del cliente
+          description: Identificador del cliente (codigoExterno del cliente)
           required: true
           schema:
             type: string
@@ -87,7 +99,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -99,11 +113,13 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /proveedores:
     post:
       tags:
-        - agenda
+        - Agenda
       summary: Crear o modificar proveedores
       requestBody:
         required: true
@@ -123,7 +139,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -135,16 +154,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Agenda
       summary: Consulta de proveedores
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro.
       parameters:
         - name: id
           in: query
-          description: Identificador del proveedor
+          description: Identificador del proveedor (codigoExterno del proveedor)
           required: true
           schema:
             type: string
@@ -166,7 +187,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -178,11 +201,13 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /explotaciones:
     post:
       tags:
-        - agenda
+        - Agenda
       summary: Crear o modificar explotaciones
       requestBody:
         required: true
@@ -202,7 +227,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -214,16 +242,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Agenda
       summary: Consulta de explotaciones
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro.
       parameters:
         - name: id
           in: query
-          description: Identificador de la explotación
+          description: Identificador de la explotación (codigoExterno de la explotación)
           required: true
           schema:
             type: string
@@ -245,7 +275,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -257,11 +289,13 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /transportistas:
     post:
       tags:
-        - agenda
+        - Agenda
       summary: Crear o modificar transportistas
       requestBody:
         required: true
@@ -281,7 +315,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -293,16 +330,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Agenda
       summary: Consulta de transportistas
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro.
       parameters:
         - name: id
           in: query
-          description: Identificador del transportista
+          description: Identificador del transportista (codigoExterno del transportista)
           required: true
           schema:
             type: string
@@ -324,7 +363,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -336,11 +377,13 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /conductores:
     post:
       tags:
-        - agenda
+        - Agenda
       summary: Crear o modificar conductores
       requestBody:
         required: true
@@ -360,7 +403,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -372,16 +418,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Agenda
       summary: Consulta de conductores
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro.
       parameters:
         - name: id
           in: query
-          description: Identificador del conductor
+          description: Identificador del conductor (codigoExterno del conductor)
           required: true
           schema:
             type: string
@@ -403,7 +451,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -415,11 +465,13 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /materiaPrima:
     post:
       tags:
-        - materiaPrima
+        - Materia Prima
       summary: Crear o modificar artículos de materia prima
       requestBody:
         required: true
@@ -439,7 +491,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -451,16 +506,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Materia Prima
       summary: Consulta de materia prima
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro. 
       parameters:
         - name: id
           in: query
-          description: Identificador de la materia prima
+          description: Identificador de la materia prima (codigoExterno de la materia prima)
           required: true
           schema:
             type: string
@@ -482,7 +539,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -494,12 +553,14 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /vehiculos:
     post:
       tags:
-        - Vehiculos
-      summary: Crear o modificar vehiculos
+        - Vehículos
+      summary: Crear o modificar vehiculos en el software de fábrica
       requestBody:
         required: true
         content:
@@ -518,7 +579,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -530,16 +594,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - agenda
+        - Vehículos
       summary: Consulta de materia prima
-      description: Consulta por id pasado por parametro. El identificador id usado anteriormente.
+      description: Consulta por id pasado por parametro 
       parameters:
-        - name: id
+        - name: MatriculaRemolque
           in: query
-          description: Identificador del vehículo
+          description: matricula remolque del vehículo (matriculaRemolque del vehículo)
           required: true
           schema:
             type: string
@@ -561,7 +627,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -573,12 +641,14 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /contratosCompra:
     post:
       tags:
-        - contratosCompra
-      summary: Crear o modificar contratos de compra
+        - Contratos de Compra
+      summary: Crear o modificar contratos de compra generados desde el erp
       requestBody:
         required: true
         content:
@@ -597,7 +667,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -609,16 +682,18 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
     get:
       tags:
-        - contratosCompra
+        - Contratos de Compra
       summary: Consulta de contratos de compra
       description: Consulta por id pasado por parametro. El identificador codigoexterno usado anteriormente.
       parameters:
         - name: id
           in: query
-          description: Identificador del contrato de compra
+          description: Identificador del contrato de compra (codigoExterno del contrato de compra)
           required: true
           schema:
             type: string
@@ -640,7 +715,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -652,18 +729,20 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
   /recepciones:
     post:
       tags:
-        - recepciones
-      summary: Crear o registrar recepciones de materia prima
+        - Recepciones
+      summary: Crear o registrar recepciones planificadas de materia prima en el software de fábrica generados desde el ERP
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Recepciones"
+              $ref: "#/components/schemas/RecepcionesPlanificadas"
       responses:
         '200':
           description: Recepción procesada correctamente
@@ -674,11 +753,14 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Se ha guardado correctamente.
+                    example: 
+                      - Se ha guardado correctamente.
                   code:
                     type: string
-                    enum: [OK, NOK]
-                    example: OK
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error al procesar la recepción
           content:
@@ -688,15 +770,24 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Se debe rellenar el campo producto.
+                    example: 
+                      - Se debe rellenar el campo producto.
                   code:
                     type: string
-                    enum: [NOK]
-                    example: NOK    
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto 
     get:
       tags:
-        - recepciones
-      summary: Consulta de recepciones de materia prima
+        - Recepciones
+      summary: Consulta de recepciones planificadas de materia prima
+      parameters:
+        - name: id
+          in: query
+          description: Identificador de la recepcion (codigoExterno de la recepcion)
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Respuesta exitosa
@@ -715,7 +806,9 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -727,25 +820,20 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
-  /expediciones:
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
+  /viajesPiensoPlanificados:
     post:
       tags:
-        - expediciones
-      summary: Obtener en el erp expediciones de pienso realizardas desde fábrica
-      parameters:
-        - name: tipo
-          in: query
-          required: true
-          schema:
-            type: string
-            enum: [Expediciones]
+        - Expediciones
+      summary: generar en el software de fábrica viajes planificados de pienso hechos desde el erp
       requestBody:
         required: true
         content:
-          application/xml:
+          application/json:
             schema:
-              $ref: '#/components/schemas/Expediciones'
+              $ref: '#/components/schemas/ExpedicionesPlanificadas'
       responses:
         '200':
           description: Expediciones recibidas correctamente
@@ -756,15 +844,23 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Expediciones procesadas correctamente
+                    example: 
+                      - Expediciones procesadas correctamente
         '400':
           description: Solicitud incorrecta
         '500':
           description: Error interno del servidor
     get:
       tags:
-        - expediciones
+        - Expediciones
       summary: Consulta de expediciones de pienso
+      parameters:
+        - name: id
+          in: query
+          description: Identificador de la expedicion (codigoExterno de la expedicion)
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Respuesta exitosa
@@ -783,7 +879,10 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [OK, NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error del servidor
           content:
@@ -795,7 +894,205 @@ paths:
                     type: string
                   code:
                     type: string
-                    enum: [NOK]
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
+  /formulas:
+    post:
+      tags:
+        - Fórmulas
+      summary: guardar en el software de fábrica las formulas realizadas desde el ERP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Formulas'
+      responses:
+        '200':
+          description: fórmulas recibidas correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 
+                      - Fórmulas procesadas correctamente
+        '400':
+          description: Solicitud incorrecta
+        '500':
+          description: Error interno del servidor
+    get:
+      tags:
+        - Fórmulas
+      parameters:
+        - name: id
+          in: query
+          description: Identificador de la fórmula (codigoExterno de la fórmula)
+          required: true
+          schema:
+            type: string
+      summary: Consulta de fórmulas de pienso
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Formulas"
+        '404':
+          description: No se encuentra el registro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
+  /pedidos:
+    post:
+      tags:
+        - Pedidos de pienso
+      summary: guardar los pedidos de pienso planificados desde el erp en el software de fábrica
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidosPlanificados'
+      responses:
+        '200':
+          description: pedidos recibidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 
+                      - Pedidos procesados correctamente
+        '400':
+          description: Solicitud incorrecta
+        '500':
+          description: Error interno del servidor
+    get:
+      tags:
+        - Pedidos de pienso
+      summary: Consulta de pedidos de pienso
+      parameters:
+        - name: id
+          in: query
+          description: Identificador del pedido (codigoExterno del pedido)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PedidosPlanificados"
+        '404':
+          description: No se encuentra el registro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
+  /producciones:
+    get:
+      tags:
+        - Producciones
+      summary: Consulta de Producciones de pienso
+      parameters:
+        - name: id
+          in: query
+          description: Identificador de la Producción (MatriculaEvento de la producción)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producciones"
+        '404':
+          description: No se encuentra el registro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                    description: >
+                      Resultado de servicio:
+                      <br> `NOK` - Resultado incorrecto
 components:
   schemas:
     ContratosCompra:
@@ -814,9 +1111,13 @@ components:
           type: string
           format: date-time
           description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del sistema origen
+          example: 
+            - D365
         contratosCompra:
           type: array
           description: Lista de los contratos compra.
@@ -834,9 +1135,11 @@ components:
               - estado
             properties:
               accion:
-                type: string
-                enum: [A, M]
-                description: Alta (A) o Modificación (M)
+                type: string            
+                description: >
+                      Resultado de servicio:
+                      <br> `A` - Alta
+                      <br> `M` - Modificación
               codigoExterno:
                 type: string
                 description: Código externo del contrato de compra
@@ -846,11 +1149,15 @@ components:
               fechaInicio:
                 type: string
                 format: date-time
-                description: Fecha desde
+                description: Fecha inicio en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
               fechaFin:
                 type: string
                 format: date-time
-                description: Fecha de expiración
+                description: Fecha fin en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
               producto:
                 type: string
                 description: Código del artículo
@@ -859,12 +1166,17 @@ components:
                 description: Código AEMES de presentación
               cantidad:
                 type: number
-                format: float
+                format: double
                 description: Cantidad pendiente de entrega
+              unidad:
+                type: string  
               estado:
                 type: string
-                enum: [O, T, P]
-                description: Estado del acuerdo (O aplicación abierta, T aplicación cerrada, P pendiente de abrirse)
+                description: >
+                      Estado del acuerdo:
+                      <br> `O` - Aplicación abierta
+                      <br> `T` - Aplicación cerrada
+                      <br> `P` - Pendiente de abrirse
               observacion:
                 type: string
                 description: Observaciones del acuerdo
@@ -878,13 +1190,132 @@ components:
                       description: Identificador del parámetro del grupo de prueba
                     valorOptimo:
                       type: number
+                      format: double
                       description: Valor óptimo del parámetro
                     valorMinimo:
                       type: number
+                      format: double
                       description: Valor mínimo aceptable
                     valorMaximo:
                       type: number
+                      format: double
                       description: Valor máximo aceptable
+    RecepcionesPlanificadas:
+      type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - recepciones
+      properties:
+        mensajeId:
+          type: string
+          format: uuid
+          description: Identificador del mensaje
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
+        origen:
+          type: string
+          description: Identificador del sistema origen
+          example: 
+            - D365
+        recepciones:
+          type: array
+          items:
+            type: object
+            required:
+              - accion
+              - codigoExterno
+              - fechaEntrada
+              - lineas
+            properties:
+              accion:
+                type: string
+                description: >
+                  Como se gestiona el registro:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
+              codigoExterno:
+                type: string
+                description: identificador de la recepción en el ERP
+              matriculaRemolque:
+                type: string
+              matriculaVehiculo:
+                type: string
+              transportista:
+                type: string
+              conductor:
+                type: string
+              observaciones:
+                type: string
+              pesoEntrada:
+                type: number
+                format: double
+              fechaEntrada:
+                type: string
+                format: date-time
+                description: fecha de entrada en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              pesoSalida:
+                type: number
+                format: double
+              fechaSalida:
+                type: string
+                format: date-time
+                description: fecha de salida en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              lineas:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - producto
+                    - lineas
+                    - cantidadTeorica
+                  properties:
+                    producto:
+                      type: string
+                      description: Identificador del producto
+                    presentacion:
+                      type: string
+                    cantidadTeorica:
+                      type: number
+                      format: double
+                      description: Cantidad teorica a recepcionar
+                    unidad:
+                      type: string
+                    proveedor:
+                      type: string
+                      description: Codigo del proveedor de la materia prima
+                    aplicacion:
+                      type: string
+                      description: Codigo del acuerdo de compra de materia prima.
+                    loteProveedor:
+                      type: string
+                      description: Lote del proveedor de materia prima
+                    loteFabrica:
+                      type: string
+                      description: Lote que asigna el sistema de fábrica en la recepcion de materia prima o produccion de pienso
+                    observaciones:
+                      type: string
+                      description: Observacaciones sobre la recepción.
+                    calidad:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          codigoCalidad:
+                            type: integer
+                            description: Codigo de calidad
+                          valor:
+                            type: string
+                            description: Valor que debe tomar la calidad              
     Recepciones:
       type: object
       required:
@@ -900,10 +1331,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del sistema origen
+          example: 
+            - D365
         recepciones:
           type: array
           items:
@@ -917,11 +1352,12 @@ components:
               codigoExterno:
                 type: string
                 description: Identificador de la recepción (referencia transportista)
-              identificadorProceso:
-                type: string
               fecha:
                 type: string
                 format: date-time
+                description: Fecha en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
               matriculaVehiculo:
                 type: string
               matriculaRemolque:
@@ -930,28 +1366,26 @@ components:
                 type: string
               conductor:
                 type: string
-              perifericoPeso:
-                type: string
               fechaEntrada:
                 type: string
                 format: date-time
+                description: Fecha de entrada en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
               pesoEntrada:
                 type: number
-                format: float
+                format: double
               fechaSalida:
                 type: string
                 format: date-time
+                description: Fecha de salida en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
               pesoSalida:
                 type: number
-                format: float
-              estado:
-                type: string
-                enum: [P, C, R]
+                format: double
               codigoRechazo:
                 type: string
-              reenviado:
-                type: string
-                enum: [S, N]
               lineas:
                 type: array
                 items:
@@ -977,10 +1411,12 @@ components:
                       type: string
                     cantidadTeorica:
                       type: number
-                      format: float
+                      format: double
                     cantidadReal:
                       type: number
-                      format: float
+                      format: double
+                    unidad:
+                      type: string  
                     proveedor:
                       type: string
                     aplicacion:
@@ -989,31 +1425,129 @@ components:
                       type: string
                     loteEntrada:
                       type: string
+                    fechaCaducidadLote:
+                      type: string
                     codigoMuestra:
                       type: string
                     codigoRecipiente:
                       type: string
-                    detalle1:
+                    referenciaProveedor:
                       type: string
-                    detalle2:
+                    calidad:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          codigoCalidad:
+                            type: integer
+                          description:
+                            type: string
+                          valor:
+                            type: number
+                            format: double
+    
+    PedidosPlanificados:
+      type: object
+      description: Objeto que se manda desde el ERP para adelantar la planificación de un pedido de pienso
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - pedidos
+      properties:
+        mensajeId:
+          type: string
+          format: uuid
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example:
+            - 2025-07-09T10:15+02:00
+        origen:
+          type: string
+          example:
+            - D365
+        pedidos:
+          type: array
+          items:
+            type: object
+            properties:
+              accion:
+                type: string
+                description: >
+                    Accion que se realiza:
+                    <br> `A` - Alta
+                    <br> `B` - Baja
+              codigoExterno:
+                type: string
+                description: Codigo del pedido del ERP
+              fecha:
+                type: string
+                format: date
+                description: fecha de entrega del pedido
+              cliente:
+                type: string
+              explotacion:
+                type: string
+                description: Código de la granja
+              direccionEntrega: 
+                type: string
+                description: Direccion donde realizar la entrega
+              nombreGranjero:
+                type: string
+              telefonoExplotacion:
+                type: string
+              observaciones:
+                type: string
+              lineas:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    producto:
                       type: string
-                    detalle3:
+                      description: Identificador del producto
+                    cantidad:
+                      type: double
+                      description: cantidad planificada
+                    unidad:
                       type: string
-                    detalle4:
+                      description: Unidad de la cantidad planificada
+                    recetaOficial:
+                      type: String
+                      description: Codigo receta oficial
+                    presentacion:
                       type: string
-                    detalle5:
+                    loteExplotacion:
                       type: string
-                    detalle6:
+                      description: Lote de la granja
+                    prioridad:
                       type: string
-                    detalle7:
+                    fechaEntrega:
                       type: string
-                    detalle8:
+                      format: date-time
+                      description: Fecha/hora de entrega planificada
+                      example: 
+                        - 2025-07-09T10:15+02:00
+                    observaciones:
                       type: string
-                    detalle9:
-                      type: string
-                    detalle10:
-                      type: string
-    Expediciones:
+                    silos:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          numeroSilo:
+                            type: string
+                            description: Identificador del silo
+                          cantidad:
+                            type: number
+                            format: double
+                            description: cantidad planificada para el silo
+                          unidad:
+                            type: string
+                            description: Unidad de la cantidad solicitada en el silo
+    ExpedicionesPlanificadas:
       type: object
       required:
         - mensajeId
@@ -1028,40 +1562,55 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
-        expediciones:
+          example: 
+            - D365
+        viajes:
           type: array
           items:
             type: object
             required:
               - accion
               - codigoExterno
-              - origen
             properties:
               accion:
                 type: string
-                description: A cuando es alta, B cuando es baja
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               codigoExterno:
                 type: string
               fecha:
                 type: string
-                format: date
+                format: date-time
+                description: dia y hora que se preve la expedición
+                example: 
+                  - 2025-07-09T10:15+02:00
               matriculaRemolque:
                 type: string
               matriculaVehiculo:
                 type: string
-              transportista:
+              agenciaTransporte:
                 type: string
-              conductor:
+                description: Empresa intermediaria comercial del viaje
+              operadorTransporte:
                 type: string
-              estado:
+                description: Empresa que realiza el viaje.
+              codigoConductor:
                 type: string
-                enum: [E]
+                description: Identificador en el ERP del conductor.
+              nifConductor:
+                type: string
+                description: nif del conductor
+              nombreConductor:
+                type: string
+                description: Nombre del conductor
               lineas:
                 type: array
                 items:
@@ -1069,11 +1618,7 @@ components:
                   properties:
                     pedido:
                       type: string
-                    producto:
-                      type: string
-                    cantidad:
-                      type: number
-                      format: float
+                      description: Codigo externo del pedido
     Clientes:
       type: object
       required:
@@ -1089,11 +1634,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         clientes:
           type: array
           items:
@@ -1104,8 +1652,10 @@ components:
             properties:
               accion:
                 type: string
-                description: A cuando es alta, B cuando es baja
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               codigoExterno:
                 type: string
               nif:
@@ -1141,11 +1691,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         proveedores:
           type: array
           items:
@@ -1156,8 +1709,10 @@ components:
             properties:
               accion:
                 type: string
-                description: A cuando es alta, B cuando es baja
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               codigoExterno:
                 type: string
               nif:
@@ -1193,11 +1748,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         explotaciones:
           type: array
           items:
@@ -1208,8 +1766,10 @@ components:
             properties:
               accion:
                 type: string
-                description: A cuando es alta, B cuando es baja
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               codigoExterno:
                 type: string
               nif:
@@ -1247,11 +1807,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         transportistas:
           type: array
           items:
@@ -1262,8 +1825,10 @@ components:
             properties:
               accion:
                 type: string
-                description: A cuando es alta, B cuando es baja
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               codigoExterno:
                 type: string
               nif:
@@ -1301,11 +1866,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         conductores:
           type: array
           items:
@@ -1316,8 +1884,10 @@ components:
             properties:
               accion:
                 type: string
-                description: A cuando es alta, B cuando es baja
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               codigoExterno:
                 type: string
               nif:
@@ -1355,11 +1925,14 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         conductores:
           type: array
           items:
@@ -1373,7 +1946,7 @@ components:
                 type: string
               nombre:
                 type: string
-              descripcion:
+              description:
                 type: string
               versiones:
                 type: array
@@ -1401,100 +1974,294 @@ components:
         fechaCreacion:
           type: string
           format: date-time
-          description: Fecha de creación (ISO 8601 con zona horaria)
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          example: D365
+          example: 
+            - D365
         vehiculos:
           type: array
           items:
             type: object
             required:
               - accion
-              - codigoExterno
+              - matriculaRemolque
             properties:
               accion:
                 type: string
-                enum: [A, B]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `A` - Alta
+                  <br> `B` - Baja
               matriculaRemolque:
                 type: string
               tipoVehiculo:
                 type: integer
               vehiculoRecepciones:
                 type: string
-                enum: [S, N]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `S` - Sí
+                  <br> `N` - No
               vehiculoExpediciones:
                 type: string
-                enum: [S, N]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `S` - Sí
+                  <br> `N` - No
               conductor:
                 type: string
               transportista:
                 type: string
               pesoMaximo:
                 type: number
+                format: double
               taraVehiculo:
                 type: number
+                format: double
               numeroCajones:
                 type: integer
               tieneCajonMultiproducto:
                 type: string
-                enum: [S, N]
+                description: >
+                  Puede tener los siguienes valores:
+                  <br> `S` - Sí
+                  <br> `N` - No
               puntoReferencia:
                 type: string
               longitudReferenciaDelantera:
                 type: number
+                format: double
               longitudReferenciaTrasera:
                 type: number
+                format: double
               anchuraCamion:
                 type: number
+                format: double
               capacidad1:
                 type: number
+                format: double
               capacidad2:
                 type: number
+                format: double
               capacidad3:
                 type: number
+                format: double
               capacidad4:
                 type: number
+                format: double
               capacidad5:
                 type: number
+                format: double
               capacidad6:
                 type: number
+                format: double
               capacidad7:
                 type: number
+                format: double
               capacidad8:
                 type: number
+                format: double
               capacidad9:
                 type: number
+                format: double
               capacidad10:
                 type: number
+                format: double
               longitud1:
                 type: number
+                format: double
               longitud2:
                 type: number
+                format: double
               longitud3:
                 type: number
+                format: double
               longitud4:
                 type: number
+                format: double
               longitud5:
                 type: number
+                format: double
               Longitud6:
                 type: number
+                format: double
               longitud7:
                 type: number
+                format: double
               longitud8:
                 type: number
+                format: double
               Longitud9:
                 type: number
+                format: double
               longitud10:
                 type: number
+                format: double
+    Formulas:
+      type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - formulas
+      properties:
+        mensajeId:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: Fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
+        origen:
+          type: string
+        formulas:
+          type: object
+          required:
+            - codigoExternoFormula
+            - version
+          properties:
+            formula:
+              type: array
+              items:
+                type: object
+                properties:
+                  codigoExternoFormula:
+                    type: string
+                    description: Codigo de la formula en el ERP
+                  version:
+                     type: string
+                  caracter:
+                    type: string
+                  densidadProducto:
+                    type: string
+                  ingredientes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - codigoExterno
+                        - cantidad
+                        - unidad
+                      properties:
+                        codigoExterno:
+                          type: string
+                        description:
+                          type: string
+                        presentacion:
+                          type: string
+                        cantidad:
+                          type: number
+                          format: double
+                        unidad:
+                          type: string
+                        bloqueo:
+                          type: string
+                          description: >
+                            Puede tener los siguienes valores:
+                            <br> `S` - Bloqueado (o formulas de cantidades absolutas)
+                            <br> `N` - No Bloqueado
+                            <br> `A` - Acumulado (no entra a formar parte del 100 % de la composición)
+                        entorno:
+                          type: string 
+                          description: >
+                            Asignación del entorno al cual debe de ser incorporado el componente dentro del proceso de fabricación:
+                            <br> `2002` - Línea de transito
+                            <br> `2011` - Línea dosificación No Bloqueado
+                            <br> `2012` - Línea Molturación
+                            <br> `2013` - Línea granulación
+                            <br> `2014` - Línea envasado
+                            <br> `2015` - Línea extrusionado
+                            <br> `2016` - Línea preparación premezclas
+                            <br> `2017` - Línea migajador
+    Producciones:
+      type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - fabricaciones
+      properties:
+        mensajeId:
+          type: string
+          format: uuid
+        fechaCreacion:
+          type: string
+          format: date-time
+          description: fecha de creación en formato ISO 8601 con franja horaria
+          example: 
+            - 2025-07-09T10:15+02:00
+        origen:
+          type: string
+          example: 
+            - D365
+        fabricaciones:
+          type: array
+          items:
+            type: object
+            properties:
+              fechaProduccion:
+                type: string
+                format: date-time
+                description: fecha de producción en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              identificadorProduccion:
+                type: string
+              movimientos:
+                  type: object
+                  properties:
+                    consumidos:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          codigoProducto:
+                            type: string
+                          presentacion:
+                            type: string
+                          cantidad:
+                            type: number
+                            format: double
+                          unidad:
+                            type: string  
+                          loteRecepcion:
+                            type: string
+                            description: Lote del proveedor de materia prima
+                          loteFabrica:
+                            description: Lote que asigna el sistema de fábrica en la recepcion de materia prima
+                            type: string
+                    producidos:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          codigoProducto:
+                            type: string
+                          presentacion:
+                            type: string
+                          cantidad:
+                            type: number
+                            format: double
+                          unidad:
+                            type: string  
+                          loteFabricacion:
+                            type: string
+                            description: Lote que asigna el sistema de fábrica en la fabricación de pienso
   securitySchemes:
-    api_auth:
+    oauth2:
       type: oauth2
       flows:
         clientCredentials:
           tokenUrl: https://login.microsoftonline.com/vallcompanys.es/oauth2/token
           scopes:
-            "write:api": permiso de escritura
-            "read:api": permiso de lectura
-            
+            "lectura": Permiso de escritura
+            "escritura": Permiso de lectura
+security:
+  - oauth2:
+      - lectura
+      - escritura
