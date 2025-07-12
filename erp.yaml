@@ -1,4 +1,4 @@
-openapi: 3.1.1
+openapi: 3.0.1
 info:
   title: API Servicios ERP para sistemas de fábrica
   description: Detalle de los servicios proporcinados por el software del ERP que son llamadas desde sistemas externos como sistemas de fábrica
@@ -14,8 +14,6 @@ tags:
     description: Servicios de expediciones de pienso
   - name: Fórmulas
     description: Servicios de fórmulas
-  - name: Pedidos de pienso
-    description: Servicios de Pedidos de pienso
   - name: Regularizaciones
     description: Servicios de Regularizaciones
   - name: Producciones
@@ -42,13 +40,14 @@ paths:
                 properties:
                   message:
                     type: string
-                    examples: 
+                    example: 
                       - Se ha guardado correctamente.
                   code:
                     type: string
-                    enum: [OK, NOK]
-                    examples: 
-                      - OK
+                    description: >
+                      Resultado de servicio:
+                      <br> `OK` - Resultado correcto
+                      <br> `NOK` - Resultado incorrecto
         '500':
           description: Error al procesar la recepción
           content:
@@ -58,11 +57,11 @@ paths:
                 properties:
                   message:
                     type: string
-                    examples: 
+                    example: 
                       - Se debe rellenar el campo producto.
                   code:
                     type: string
-                    examples: 
+                    example: 
                       - NOK    
   /expediciones:
     post:
@@ -85,35 +84,8 @@ paths:
                 properties:
                   message:
                     type: string
-                    examples: 
+                    example: 
                       - Expediciones procesadas correctamente
-        '400':
-          description: Solicitud incorrecta
-        '500':
-          description: Error interno del servidor
-  /pedidos:
-    post:
-      tags:
-        - Pedidos de pienso
-      summary: Obtener en el erp pedidos de pienso realizardas desde fábrica
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pedidos'
-      responses:
-        '200':
-          description: pedidos recibidas correctamente
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    examples: 
-                      - pedidos procesadas correctamente
         '400':
           description: Solicitud incorrecta
         '500':
@@ -139,7 +111,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    examples: 
+                    example: 
                       - Regularizaciones procesadas correctamente
         '400':
           description: Solicitud incorrecta
@@ -166,7 +138,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    examples: 
+                    example: 
                       - Producciones procesadas correctamente
         '400':
           description: Solicitud incorrecta
@@ -190,12 +162,12 @@ components:
           type: string
           format: date-time
           description: Fecha de creación en formato ISO 8601 con franja horaria
-          examples: 
+          example: 
             - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del sistema origen
-          examples: 
+          example: 
             - D365
         recepciones:
           type: array
@@ -203,6 +175,9 @@ components:
             type: object
             required:
               - viajeAemes
+              - codigoExterno
+              - fechaEntrada
+              - lineas
             properties:
               viajeAemes:
                 type: string
@@ -210,91 +185,93 @@ components:
               codigoExterno:
                 type: string
                 description: Identificador de la recepción (referencia transportista)
-              fecha:
+              estado:
                 type: string
-                format: date-time
-                description: Fecha en formato ISO 8601 con franja horaria
-                examples: 
-                  - 2025-07-09T10:15+02:00
+                description: >
+                 Estado de la recepcion:
+                  <br> `R` - Recepción rechazada
+                  <br> `C` - Recepción realizada
               matriculaVehiculo:
                 type: string
               matriculaRemolque:
                 type: string
-              transportista:
+              operadorTransporte:
                 type: string
+                description: codigo del operador que ha hecho la recepción
+              agenciaTransporte:
+                type: string
+                description: Codigo de la agencia intermediaria del transporte.
               conductor:
                 type: string
+                description: Identificador en el ERP del conductor.
+              nifConductor:
+                type: string
+                description: nif del conductor
+              nombreConductor:
+                type: string
+                description: Nombre del conductor
               fechaEntrada:
                 type: string
                 format: date-time
-                description: Fecha de entrada en formato ISO 8601 con franja horaria
-                examples: 
+                description: Fecha de entrada de la recepción a fábrica en formato ISO 8601 con franja horaria
+                example: 
                   - 2025-07-09T10:15+02:00
               pesoEntrada:
                 type: number
-                format: float
+                format: double
+                description: Peso de entrada del camión en fábrica
               fechaSalida:
                 type: string
                 format: date-time
-                description: Fecha de salida en formato ISO 8601 con franja horaria
-                examples: 
+                description: Fecha de salida del camión de fábrica en formato ISO 8601 con franja horaria
+                example: 
                   - 2025-07-09T10:15+02:00
               pesoSalida:
                 type: number
-                format: float
-              estado:
-                type: string
-                enum: [P, C, R]
+                format: double
+                description: Peso de salida del camión en fábrica
               codigoRechazo:
                 type: string
-              reenviado:
-                type: string
-                enum: [S, N]
+                description: en caso de estado R (Rechazado), especifica el motivo
               lineas:
                 type: array
                 items:
                   type: object
                   required:
                     - id
-                    - numeroLinea
                     - producto
                     - cantidadTeorica
                     - cantidadReal
                   properties:
                     id:
                       type: string
-                    numeroLinea:
-                      type: integer
                     producto:
                       type: string
                     presentacion:
                       type: string
-                    numerosEnvases:
-                      type: integer
-                    codigoEnvase:
-                      type: string
                     cantidadTeorica:
                       type: number
-                      format: float
+                      format: double
                     cantidadReal:
                       type: number
-                      format: float
+                      format: double
+                    unidad:
+                      type: string  
                     proveedor:
                       type: string
                     aplicacion:
                       type: string
                     loteProveedor:
                       type: string
-                    loteEntrada:
+                    loteFabrica:
                       type: string
                     fechaCaducidadLote:
                       type: string
                     codigoMuestra:
                       type: string
-                    codigoRecipiente:
-                      type: string
                     referenciaProveedor:
                       type: string
+                      description: referencia del proveedor
                     calidad:
                       type: array
                       items:
@@ -302,8 +279,7 @@ components:
                         properties:
                           codigoCalidad:
                             type: integer
-                          descripcion:
-                            type: string
+                            description: identificador del codigo de calidad
                           valor:
                             type: number
                             format: double
@@ -323,188 +299,109 @@ components:
           type: string
           format: date-time
           description: Fecha de creación en formato ISO 8601 con franja horaria
-          examples: 
+          example: 
             - 2025-07-09T10:15+02:00
         origen:
           type: string
           description: Identificador del origen
-          examples: 
+          example: 
             - D365
-        contenidoExpediciones:
-          type: object
-          properties:
-            expedicion:
-              type: object
-              properties:
-                viajeAEMES:
-                  type: string
-                codigoExterno:
-                  type: string
-                fechaPrevista:
-                  type: string
-                  format: date-time
-                fechaRealizacion:
-                  type: string
-                matriculaRemolque:
-                  type: string
-                transportista:
-                  type: string
-                pesoEntrada:
-                  type: number
-                  format: double
-                fechaPesoEntrada:
-                  type: string
-                  format: date-time
-                estado:
-                  type: string
-                  description: El estado de la expedición
-                  enum:
-                    - E
-                    - P
-                    - T
-                    - C
-                  x-enum-descriptions:
-                    E: Expedición en edición
-                    P: Expedición pendiente de expedir
-                    T: Expedición en tránsito (Pendiente de la confirmación del camionero de la entrega)
-                    C: Expedición cerrada
-                    R: Expedición rechazar
-                reenviado:
-                  type: string
-                lineas:
+        expediciones:
+          type: array
+          items:
+            type: object
+            properties:
+              viajeAEMES:
+                type: string
+              codigoExterno:
+                type: string
+              fechaPrevista:
+                type: string
+                format: date-time
+                description: fecha prevista en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              fechaRealizacion:
+                type: string
+              matriculaRemolque:
+                type: string
+              transportista:
+                type: string
+              pesoEntrada:
+                type: number
+                format: double
+              fechaPesoEntrada:
+                type: string
+                format: date-time
+                description: fecha cuando se hace la pesada de entrada en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              estado:
+                type: string
+                description: >
+                    El estado de la expedición:
+                    <br> `E` - Expedición en edición
+                    <br> `P` - Expedición pendiente de expedir
+                    <br> `T` - Expedición en tránsito (Pendiente de la confirmación del camionero de la entrega)
+                    <br> `C` - Expedición cerrada
+                    <br> `R` - Expedición rechazar
+              lineas:
+                type: array
+                items:
                   type: object
                   properties:
-                    linea:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          numeroLinea:
-                            type: string
-                          producto:
-                            type: string
-                          presentacion:
-                            type: string
-                          cliente:
-                            type: string
-                          explotacion:
-                            type: string
-                          almacenExplotacion:
-                            type: string
-                          pedido:
-                            type: string
-                          pedidoLinea:
-                            type: string
-                          pedidoCodigoCliente:
-                            type: string
-                          fechaEntrega:
-                            type: string
-                            format: date-time
-                          fechaRealizacion:
-                            type: string
-                          loteSalida:
-                            type: string
-                          detalle3:
-                            type: string
-                          detalle4:
-                            type: string
-                          detalle8:
-                            type: string
-                          cantidades:
-                            type: object
-                            properties:
-                              loteFabricacion:
-                                type: array
-                                items:
-                                  type: object
-                                  properties:
-                                    id:
-                                      type: integer
-                                    codigoLote:
-                                      type: string
-                                    compartimento1:
-                                      type: number
-                                    compartimento2:
-                                      type: number
-                                    compartimento3:
-                                      type: number
-                                    total:
-                                      type: number
-
-    Pedidos:
-      type: object
-      properties:
-        mensajeId:
-          type: string
-          format: uuid
-        fechaCreacion:
-          type: string
-          format: date-time
-          description: Fecha de creación en formato ISO 8601 con franja horaria
-          examples: 
-            - 2025-07-09T10:15+02:00
-        origen:
-          type: string
-          examples: 
-            - D365
-        contenidoPedidos:
-          type: object
-          properties:
-            pedido:
-              type: object
-              properties:
-                accion:
-                  type: string
-                codigoExterno:
-                  type: string
-                estado:
-                  type: string
-                pedidoCliente:
-                  type: string
-                fecha:
-                  type: string
-                  format: date
-                cliente:
-                  type: string
-                explotacion:
-                  type: string
-                transportista:
-                  type: string
-                vehiculo:
-                  type: string
-                conductor:
-                  type: string
-                observaciones:
-                  type: string
-                lineas:
-                  type: object
-                  properties:
-                    linea:
+                    producto:
+                      type: string
+                    presentacion:
+                      type: string
+                    cliente:
+                      type: string
+                    explotacion:
+                      type: string
+                    pedido:
+                      type: string
+                    pedidoLinea:
+                      type: string
+                    pedidoCodigoCliente:
+                      type: string
+                    fechaEntrega:
+                      type: string
+                      format: date-time
+                      description: fecha de entrega en formato ISO 8601 con franja horaria
+                      example: 
+                        - 2025-07-09T10:15+02:00
+                    fechaRealizacion:
+                      type: string
+                      format: date-time
+                      description: fecha de realización en formato ISO 8601 con franja horaria
+                      example: 
+                        - 2025-07-09T10:15+02:00
+                    loteSalida:
+                      type: string
+                    cantidades:
                       type: object
                       properties:
-                        numeroLinea:
-                          type: string
-                        producto:
-                          type: string
-                        presentacion:
-                          type: string
-                        codigoEnvase:
-                          type: string
-                        numeroEnvases:
-                          type: number
-                        cantidadGranel:
-                          type: number
                         loteFabricacion:
-                          type: string
-                        almacenExplotacion:
-                          type: string
-                        prioridad:
-                          type: string
-                        fechaEntrega:
-                          type: string
-                          format: date
-                        observaciones:
-                          type: string
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              codigoLote:
+                                type: string
+                              compartimento1:
+                                type: number
+                                format: double
+                              compartimento2:
+                                type: number
+                                format: double
+                              compartimento3:
+                                type: number
+                                format: double
+                              total:
+                                type: number
+                                format: double
     Regularizaciones:
       type: object
       properties:
@@ -515,38 +412,39 @@ components:
           type: string
           format: date-time
           description: Fecha de creación en formato ISO 8601 con franja horaria
-          examples: 
+          example: 
             - 2025-07-09T10:15+02:00
         origen:
           type: string
-          examples: 
+          example: 
             - D365
-        contenidoRegularizaciones:
-          type: object
-          properties:
-            regularizacion:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  producto:
-                    type: string
-                  presentacion:
-                    type: string
-                  cantidad:
-                    type: number
-                    format: double
-                  fecha:
-                    type: string
-                    format: date-time
-                    description: Fecha en formato ISO 8601 con franja horaria
-                    examples: 
-                      - 2025-07-09T10:15+02:00
-                  loteFabrica:
-                    type: string
-                    description: Lote que asigna el sistema de fábrica en la recepcion de materia prima o produccion de pienso
+        regularizaciones:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              producto:
+                type: string
+                description: Identificador del producto
+              presentacion:
+                type: string
+              cantidad:
+                type: number
+                format: double
+                description: Cantidad 
+              unidad:
+                type: string
+              fecha:
+                type: string
+                format: date-time
+                description: Fecha en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              loteFabrica:
+                type: string
+                description: Lote que asigna el sistema de fábrica en la recepcion de materia prima o produccion de pienso
     Producciones:
       type: object
       properties:
@@ -557,68 +455,65 @@ components:
           type: string
           format: date-time
           description: Fecha de creación en formato ISO 8601 con franja horaria
-          examples: 
+          example: 
             - 2025-07-09T10:15+02:00
         origen:
           type: string
-          examples: 
+          example: 
             - D365
-        conetnidoFabricaciones:
-          type: object
-          properties:
-            fabricacion:
-              type: object
-              properties:
-                fechaProduccion:
-                  type: string
-                  format: date-time
-                  description: Fecha de producción en formato ISO 8601 con franja horaria
-                  examples: 
-                    - 2025-07-09T10:15+02:00
-                identificadorProduccion:
-                  type: string
-                movimientos:
-                  type: object
-                  properties:
-                    consumidos:
+        fabricaciones:
+          type: array
+          items:
+            type: object
+            properties:
+              fechaProduccion:
+                type: string
+                format: date-time
+                description: Fecha de producción en formato ISO 8601 con franja horaria
+                example: 
+                  - 2025-07-09T10:15+02:00
+              identificadorProduccion:
+                type: string
+              movimientos:
+                type: object
+                properties:
+                  consumidos:
+                    type: array
+                    items:
                       type: object
                       properties:
-                        consumido:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              codigoProducto:
-                                type: string
-                              presentacion:
-                                type: string
-                              cantidad:
-                                type: number
-                                format: double
-                              loteRecepcion:
-                                type: string
-                                description: Lote del proveedor de materia prima
-                              loteFabrica:
-                                description: Lote que asigna el sistema de fábrica en la recepcion de materia prima
-                                type: string
-                    producidos:
+                        codigoProducto:
+                          type: string
+                        presentacion:
+                          type: string
+                        cantidad:
+                          type: number
+                          format: double
+                        unidad:
+                          type: string
+                        loteRecepcion:
+                          type: string
+                          description: Lote del proveedor de materia prima
+                        loteFabrica:
+                          description: Lote que asigna el sistema de fábrica en la recepcion de materia prima
+                          type: string
+                  producidos:
+                    type: array
+                    items:
                       type: object
                       properties:
-                        producido:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              codigoProducto:
-                                type: string
-                              presentacion:
-                                type: string
-                              cantidad:
-                                type: number
-                                format: double
-                              loteFabricacion:
-                                type: string
-                                description: Lote que asigna el sistema de fábrica en la fabricación de pienso
+                        codigoProducto:
+                          type: string
+                        presentacion:
+                          type: string
+                        cantidad:
+                          type: number
+                          format: double
+                        unidad:
+                          type: string
+                        loteFabricacion:
+                          type: string
+                          description: Lote que asigna el sistema de fábrica en la fabricación de pienso
   securitySchemes:
     oauth2:
       type: oauth2
