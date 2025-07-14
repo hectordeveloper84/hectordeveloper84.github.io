@@ -1509,13 +1509,14 @@ components:
                       type: string
                       description: Identificador del producto
                     cantidad:
-                      type: double
+                      type: number
+                      format: double
                       description: cantidad planificada
                     unidad:
                       type: string
                       description: Unidad de la cantidad planificada
                     recetaOficial:
-                      type: String
+                      type: string
                       description: Codigo receta oficial
                     presentacion:
                       type: string
