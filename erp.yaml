@@ -174,14 +174,16 @@ components:
           items:
             type: object
             required:
-              - viajeAemes
+              - idViaje
               - codigoExterno
+              - estado
+              - matriculaRemolque
               - fechaEntrada
               - lineas
             properties:
-              viajeAemes:
+              idViaje:
                 type: string
-                description: Número de identificación interna de aemes
+                description: Número de identificación interna del viaje
               codigoExterno:
                 type: string
                 description: Identificador de la recepción (referencia transportista)
@@ -245,30 +247,44 @@ components:
                   properties:
                     id:
                       type: string
+                      description: Identificador de la linea.
                     producto:
                       type: string
+                      description: Identificador del artículo a recepcionar.
                     presentacion:
                       type: string
                     cantidadTeorica:
                       type: number
                       format: double
+                      description: Cantidad teorica en la recepción
                     cantidadReal:
                       type: number
                       format: double
+                      description: Cantidad real de la recepción
                     unidad:
+                      description: Unidad de la cantidad teorica o real
                       type: string  
                     proveedor:
                       type: string
+                      description: Código del proveedor.
                     aplicacion:
                       type: string
+                      description: Código del acuerdo de compra de fábrica.
                     loteProveedor:
                       type: string
+                      description: Identificador del lote del proveedor.
                     loteFabrica:
                       type: string
+                      description: Identificador del lote de fábrica para la línea.
                     fechaCaducidadLote:
                       type: string
+                      format: date-time
+                      description: Fecha caducidad lote.
+                      example: 
+                        - 2025-07-09T10:15+02:00
                     codigoMuestra:
                       type: string
+                      description: Código de muestra
                     referenciaProveedor:
                       type: string
                       description: referencia del proveedor
@@ -283,6 +299,7 @@ components:
                           valor:
                             type: number
                             format: double
+                            description: Valor de calidad
     Expediciones:
       type: object
       required:
@@ -311,10 +328,12 @@ components:
           items:
             type: object
             properties:
-              viajeAEMES:
+              idViaje:
                 type: string
+                description: Identificador del sistema de fábrica de la expedición
               codigoExterno:
                 type: string
+                description: identificador de la expedición en el ERP
               fechaPrevista:
                 type: string
                 format: date-time
@@ -323,13 +342,23 @@ components:
                   - 2025-07-09T10:15+02:00
               fechaRealizacion:
                 type: string
+                format: date-time
+                description: Fecha de realización de la expedición
+                example: 
+                  - 2025-07-09T10:15+02:00
               matriculaRemolque:
                 type: string
+                description: matrícula del remolque
+              matriculaVehiculo:
+                type: string
+                description: matrícula del vehículo
               transportista:
                 type: string
+                description: Codigo transportista en el erp
               pesoEntrada:
                 type: number
                 format: double
+                description: Peso entrada del vehículo
               fechaPesoEntrada:
                 type: string
                 format: date-time
@@ -352,18 +381,21 @@ components:
                   properties:
                     producto:
                       type: string
+                      description: Identificador del artículo de pienso expedido
                     presentacion:
                       type: string
                     cliente:
                       type: string
+                      description: Código del cliente a expedir el pienso
                     explotacion:
                       type: string
+                      description: Identificador de la explotación
                     pedido:
                       type: string
+                      description: Identificador del pedido del erp
                     pedidoLinea:
                       type: string
-                    pedidoCodigoCliente:
-                      type: string
+                      description: Identificador del pedido del erp (línea)
                     fechaEntrega:
                       type: string
                       format: date-time
@@ -376,8 +408,6 @@ components:
                       description: fecha de realización en formato ISO 8601 con franja horaria
                       example: 
                         - 2025-07-09T10:15+02:00
-                    loteSalida:
-                      type: string
                     cantidades:
                       type: object
                       properties:
@@ -388,22 +418,25 @@ components:
                             properties:
                               id:
                                 type: integer
+                                description: Identificador interno del sistema de fábrica del lote.
                               codigoLote:
                                 type: string
-                              compartimento1:
+                                description: Identificador del lote fabricación
+                              cantidad:
                                 type: number
                                 format: double
-                              compartimento2:
+                                description: Cantidad del lote
+                              unidad:
                                 type: number
                                 format: double
-                              compartimento3:
-                                type: number
-                                format: double
-                              total:
-                                type: number
-                                format: double
+                                description: Unidad de la cantidad
     Regularizaciones:
       type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - regularizaciones
       properties:
         mensajeId:
           type: string
@@ -425,17 +458,20 @@ components:
             properties:
               id:
                 type: integer
+                description: identificador interno en el sistema de fábrica
               producto:
                 type: string
                 description: Identificador del producto
               presentacion:
                 type: string
+                description: presentación del producto
               cantidad:
                 type: number
                 format: double
                 description: Cantidad 
               unidad:
                 type: string
+                description: Unida de la cantidad
               fecha:
                 type: string
                 format: date-time
@@ -447,6 +483,11 @@ components:
                 description: Lote que asigna el sistema de fábrica en la recepcion de materia prima o produccion de pienso
     Producciones:
       type: object
+      required:
+        - mensajeId
+        - fechaCreacion
+        - origen
+        - fabricaciones
       properties:
         mensajeId:
           type: string
@@ -465,6 +506,9 @@ components:
           type: array
           items:
             type: object
+            required:
+              - fechaProduccion
+              - identificadorProduccion
             properties:
               fechaProduccion:
                 type: string
@@ -474,6 +518,7 @@ components:
                   - 2025-07-09T10:15+02:00
               identificadorProduccion:
                 type: string
+                description: Identificador interno del sistema de fábrica de la producción. Sirve para vincular consumos y produccciones
               movimientos:
                 type: object
                 properties:
@@ -481,16 +526,25 @@ components:
                     type: array
                     items:
                       type: object
+                      required:
+                        - codigoProducto
+                        - identificadorProduccion
+                        - cantidad
+                        - unidad
                       properties:
                         codigoProducto:
                           type: string
+                          description: Codigo del producto (consumido)
                         presentacion:
                           type: string
+                          description: Presentación del artículo
                         cantidad:
                           type: number
                           format: double
+                          description: Cantidad consumida
                         unidad:
                           type: string
+                          description: Unidad del artículo
                         loteRecepcion:
                           type: string
                           description: Lote del proveedor de materia prima
@@ -501,16 +555,25 @@ components:
                     type: array
                     items:
                       type: object
+                      required:
+                        - codigoProducto
+                        - identificadorProduccion
+                        - cantidad
+                        - unidad
                       properties:
                         codigoProducto:
                           type: string
+                          description: Codigo del producto (producido)
                         presentacion:
                           type: string
+                          description: Presentación del artículo
                         cantidad:
                           type: number
                           format: double
+                          description: Cantidad producida
                         unidad:
                           type: string
+                          description: Unidad del artículo
                         loteFabricacion:
                           type: string
                           description: Lote que asigna el sistema de fábrica en la fabricación de pienso
