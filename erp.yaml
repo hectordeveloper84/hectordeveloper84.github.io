@@ -12,8 +12,6 @@ tags:
     description: Servicios de recepciones de materia prima
   - name: Expediciones
     description: Servicios de expediciones de pienso
-  - name: Fórmulas
-    description: Servicios de fórmulas
   - name: Regularizaciones
     description: Servicios de Regularizaciones
   - name: Producciones
