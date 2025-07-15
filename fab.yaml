@@ -742,7 +742,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RecepcionesPlanificadas"
+              $ref: "#/components/schemas/RecepcionesMMPPPlanificadas"
       responses:
         '200':
           description: Recepción procesada correctamente
@@ -827,7 +827,7 @@ paths:
     post:
       tags:
         - Expediciones
-      summary: generar en el software de fábrica viajes planificados de pienso hechos desde el erp
+      summary: Generar en el software de fábrica viajes planificados de pienso hechos desde el erp
       requestBody:
         required: true
         content:
@@ -1163,7 +1163,7 @@ components:
                 description: Código del artículo
               presentacion:
                 type: string
-                description: Código AEMES de presentación
+                description: Código de presentación
               cantidad:
                 type: number
                 format: double
@@ -1231,6 +1231,7 @@ components:
               - accion
               - codigoExterno
               - fechaEntrada
+              - matriculaRemolque
               - lineas
             properties:
               accion:
@@ -1248,13 +1249,21 @@ components:
                 type: string
               transportista:
                 type: string
-              conductor:
+              codigoConductor:
                 type: string
+                description: Identificador en el ERP del conductor.
+              nifConductor:
+                type: string
+                description: nif del conductor
+              nombreConductor:
+                type: string
+                description: Nombre del conductor
               observaciones:
                 type: string
               pesoEntrada:
                 type: number
                 format: double
+                description: Peso del vehículo de entrada
               fechaEntrada:
                 type: string
                 format: date-time
@@ -1264,6 +1273,7 @@ components:
               pesoSalida:
                 type: number
                 format: double
+                description: Peso del vehículo de salida
               fechaSalida:
                 type: string
                 format: date-time
@@ -1276,20 +1286,22 @@ components:
                   type: object
                   required:
                     - producto
-                    - lineas
                     - cantidadTeorica
+                    - unidad
                   properties:
                     producto:
                       type: string
                       description: Identificador del producto
                     presentacion:
                       type: string
+                      description: presentación del producto
                     cantidadTeorica:
                       type: number
                       format: double
                       description: Cantidad teorica a recepcionar
                     unidad:
                       type: string
+                      description: Unidad de la cantidad teorica a recepcionar
                     proveedor:
                       type: string
                       description: Codigo del proveedor de la materia prima
@@ -1343,12 +1355,10 @@ components:
           type: array
           items:
             type: object
-            required:
-              - viajeAemes
             properties:
-              viajeAemes:
+              viajeId:
                 type: string
-                description: Número de identificación interna de aemes
+                description: Número de identificación interna del viaje
               codigoExterno:
                 type: string
                 description: Identificador de la recepción (referencia transportista)
@@ -1364,8 +1374,15 @@ components:
                 type: string
               transportista:
                 type: string
-              conductor:
+              codigoConductor:
                 type: string
+                description: Identificador en el ERP del conductor.
+              nifConductor:
+                type: string
+                description: nif del conductor
+              nombreConductor:
+                type: string
+                description: Nombre del conductor
               fechaEntrada:
                 type: string
                 format: date-time
@@ -1446,7 +1463,7 @@ components:
                             type: number
                             format: double
     
-    PedidosPlanificados:
+    PedidosMMPPPlanificados:
       type: object
       description: Objeto que se manda desde el ERP para adelantar la planificación de un pedido de pienso
       required:
@@ -2013,8 +2030,15 @@ components:
                   Puede tener los siguienes valores:
                   <br> `S` - Sí
                   <br> `N` - No
-              conductor:
+              codigoConductor:
                 type: string
+                description: Identificador en el ERP del conductor.
+              nifConductor:
+                type: string
+                description: nif del conductor
+              nombreConductor:
+                type: string
+                description: Nombre del conductor
               transportista:
                 type: string
               pesoMaximo:
