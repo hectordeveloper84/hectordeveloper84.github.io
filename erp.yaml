@@ -325,6 +325,13 @@ components:
           type: array
           items:
             type: object
+            required:
+              - idViaje
+              - codigoExterno
+              - fechaRealizacion
+              - matriculaRemolque
+              - estado
+              - lineas
             properties:
               idViaje:
                 type: string
@@ -376,6 +383,9 @@ components:
                 type: array
                 items:
                   type: object
+                  required:
+                    - producto
+                    - cantidades
                   properties:
                     producto:
                       type: string
@@ -407,27 +417,28 @@ components:
                       example: 
                         - 2025-07-09T10:15+02:00
                     cantidades:
-                      type: object
-                      properties:
-                        loteFabricacion:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                description: Identificador interno del sistema de fábrica del lote.
-                              codigoLote:
-                                type: string
-                                description: Identificador del lote fabricación
-                              cantidad:
-                                type: number
-                                format: double
-                                description: Cantidad del lote
-                              unidad:
-                                type: number
-                                format: double
-                                description: Unidad de la cantidad
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - id
+                          - cantidad
+                          - unidad
+                        properties:
+                          id:
+                            type: integer
+                            description: Identificador interno del sistema de fábrica del lote.
+                          codigoLote:
+                            type: string
+                            description: Identificador del lote fabricación
+                          cantidad:
+                            type: number
+                            format: double
+                            description: Cantidad del lote
+                          unidad:
+                            type: number
+                            format: double
+                            description: Unidad de la cantidad
     Regularizaciones:
       type: object
       required:
@@ -453,6 +464,11 @@ components:
           type: array
           items:
             type: object
+            required:
+              - id
+              - producto
+              - cantidad
+              - unidad
             properties:
               id:
                 type: integer
